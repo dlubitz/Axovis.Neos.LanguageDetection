@@ -121,7 +121,7 @@ class LanguageDetectionComponent implements ComponentInterface {
             return;
         }
 
-        $uri = $httpRequest->getUri();
+        $uri = clone $httpRequest->getUri();
         if(isset($this->httpSettings['baseUri'])) {
             $baseInfo = $this->parseUriInfo($this->httpSettings['baseUri']);
 
@@ -139,7 +139,6 @@ class LanguageDetectionComponent implements ComponentInterface {
         $uri->setPath('/' . $preset['uriSegment'] . $requestPath);
 
         $response = $componentContext->getHttpResponse();
-        $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="0;url=%s"/></head></html>', htmlentities((string)$uri, ENT_QUOTES, 'utf-8')));
         $response->setHeader('Location', (string)$uri);
 
         $componentContext->setParameter(ComponentChain::class, 'cancel', TRUE);
